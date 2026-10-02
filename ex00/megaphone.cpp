@@ -1,11 +1,15 @@
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <string>
 using namespace std;
 
 int main(int ac, char **av) {
-  cout << av[1];
-  char *cap;
+  string st;
+  st = av[1];
+  string upp(st.size(), ' ');
 
-  transform(av[1], NULL, cap, toupper);
-  cout << av[1];
+  transform(st.begin(), st.end(), upp.begin(),
+            [](unsigned char c) { return (toupper(c)); });
+  cout << upp;
 }
