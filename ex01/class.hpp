@@ -14,3 +14,16 @@ public:
   void set(const std::string &key, const std::string value);
   std::string get(const std::string &key);
 };
+
+class phonebook {
+private:
+  contact ct[8];
+  int count;
+  int index;
+
+public:
+  phonebook();
+  int regist(contact *ct);
+  int add();
+  void search();
+};

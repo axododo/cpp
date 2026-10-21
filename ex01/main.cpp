@@ -6,6 +6,8 @@
 #include <string>
 // using namespace std;
 
+phonebook::phonebook() : count(0), index(0) {}
+
 void contact::set(const std::string &value, const std::string key) {
   if (key == "fname")
     FirstName = value;
@@ -33,56 +35,86 @@ std::string contact::get(const std::string &key) {
   return ("Not found...");
 }
 
-void search(contact *ct) {}
+void phonebook::search() {
+  std::cout << "\n    " << count << " contacts   \n";
 
-void add(contact *ct) {
+  for (int i = 0; i < count; i++) {
+    std::cout << "\nnb:   " << i << "\n";
+    std::cout << "fname:  " << ct[i].get("fname") << "\n";
+    std::cout << "lname:  " << ct[i].get("lname") << "\n";
+    std::cout << "name:   " << ct[i].get("name") << "\n";
+    std::cout << "phone:  " << ct[i].get("pnum") << "\n";
+    std::cout << "secret: " << ct[i].get("secret") << "\n";
+  }
+}
+
+int phonebook::regist(contact *newct) {
   std::string value;
   cout << "\n First Name: ";
-  cin >> value;
+  getline(std::cin, value);
   if (value.empty())
-    return;
+    return (1);
   // cout << "error..";
-  ct->set(value, "fname");
+  newct->set(value, "fname");
+
   cout << "\n Last Name: ";
-  cin >> value;
+  std::getline(std::cin, value);
   if (value.empty())
-    return;
+    return (1);
   // cout << "error..";
-  ct->set(value, "lname");
+  newct->set(value, "lname");
+
   cout << "\n Nickname: ";
-  cin >> value;
+  std::getline(std::cin, value);
   if (value.empty())
-    return;
+    return (1);
   // cout << "error..";
-  ct->set(value, "name");
+  newct->set(value, "name");
+
   cout << "\n Phone Number: ";
-  cin >> value;
+  std::getline(std::cin, value);
   if (value.empty())
-    return;
+    return (1);
   // cout << "error";
-  ct->set(value, "pnum");
+  newct->set(value, "pnum");
+
   cout << "\n Darkest Secret: ";
-  cin >> value;
+  std::getline(std::cin, value);
   if (value.empty())
-    return;
+    return (1);
   // cout << "error..";
-  ct->set(value, "secret");
+  newct->set(value, "secret");
+
+  return (0);
+}
+
+int phonebook::add() {
+  contact newct;
+  cout << "\n  Save new contact";
+  if (regist(&newct)) {
+    cout << "error save new contact...";
+    return (1);
+  }
+  ct[index] = newct;
+  index = (index + 1) % 8;
+  if (count < 8)
+    count++;
+  return (0);
 }
 
 int main() {
-  contact ct;
+  phonebook pb;
   string line;
-
   while (1) {
-    cout << ">";
-    cin >> line;
+    cout << "\n>";
+    if (!std::getline(std::cin, line))
+      break;
     // cout << line;
-
     if (line == "add")
-      add(&ct);
+      pb.add();
     if (line == "search")
-      search(&ct);
-    if (line[1] == 'q')
+      pb.search();
+    if (line == "q")
       break;
   }
 }
