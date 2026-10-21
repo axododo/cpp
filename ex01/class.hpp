@@ -24,6 +24,9 @@ private:
 public:
   phonebook();
   int regist(contact *ct);
+  // std::string shorthis(std::string value);
+  void display(std::string index);
+
   int add();
   void search();
 };

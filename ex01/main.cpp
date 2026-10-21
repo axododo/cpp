@@ -1,5 +1,6 @@
 #include "class.hpp"
 #include <cctype>
+#include <iomanip>
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -35,17 +36,54 @@ std::string contact::get(const std::string &key) {
   return ("Not found...");
 }
 
-void phonebook::search() {
-  std::cout << "\n    " << count << " contacts   \n";
-
-  for (int i = 0; i < count; i++) {
-    std::cout << "\nnb:   " << i << "\n";
-    std::cout << "fname:  " << ct[i].get("fname") << "\n";
-    std::cout << "lname:  " << ct[i].get("lname") << "\n";
-    std::cout << "name:   " << ct[i].get("name") << "\n";
-    std::cout << "phone:  " << ct[i].get("pnum") << "\n";
-    std::cout << "secret: " << ct[i].get("secret") << "\n";
+static std::string shorthis(std::string value) {
+  if (value.length() > 10) {
+    return value.substr(0, 9) + ".";
   }
+  return (value);
+}
+
+void phonebook::display(std::string index) {
+  if (index.length() != 1 || index[0] < '0' || index[0] > '7') {
+    std::cout << "Index invalide.\n";
+    return;
+  }
+  int i = index[0] - '0';
+  if (i > count) {
+    cout << "no valid contact...";
+    return;
+  }
+  std::cout << "\n    " << " contacts:" << i << "  \n";
+
+  // std::cout << "\nnb:   " << i << "\n";
+  std::cout << "fname:  " << ct[i].get("fname") << "\n";
+  std::cout << "lname:  " << ct[i].get("lname") << "\n";
+  std::cout << "name:   " << ct[i].get("name") << "\n";
+  std::cout << "phone:  " << ct[i].get("pnum") << "\n";
+  std::cout << "secret: " << ct[i].get("secret") << "\n";
+}
+
+void phonebook::search() {
+  int i = 0;
+  if (count == 0) {
+    std::cout << "no contact...\n";
+    return;
+  }
+  std::string entry;
+  std::cout << "  Contact: \n";
+  std::cout << std::right << std::setw(10) << "index" << "|" << std::setw(10)
+            << "First name" << "|" << std::setw(10) << "Last name" << "|"
+            << std::setw(10) << "Nickname" << "\n";
+  while (i < count) {
+    std::cout << std::right << std::setw(10) << i << "|" << std::setw(10)
+              << shorthis(ct[i].get("fname")) << "|" << std::setw(10)
+              << shorthis(ct[i].get("lname")) << "|" << std::setw(10)
+              << shorthis(ct[i].get("name")) << "\n";
+    i++;
+  }
+  cout << "index contact ?>";
+  getline(cin, entry);
+  display(entry);
 }
 
 int phonebook::regist(contact *newct) {
