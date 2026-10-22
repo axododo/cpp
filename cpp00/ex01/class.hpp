@@ -1,7 +1,5 @@
 #include <string>
 
-using namespace std;
-
 class contact {
 private:
   std::string FirstName;
